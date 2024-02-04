@@ -1,0 +1,38 @@
+using System.Drawing;
+using Library;
+
+class Program
+{
+    static void Main()
+    {
+        do
+        {
+            try
+            {
+                Console.Clear();
+
+                MathConstruction firstConstruction = xCoordinate => Math.Sin(xCoordinate);
+                MathConstruction secondConstruction = xCoordinate => xCoordinate * xCoordinate + xCoordinate;
+
+                Function firstFunction = new Function(firstConstruction);
+                Function secondFunction = new Function(secondConstruction);
+
+                CompFunction compFunction = new CompFunction(firstFunction, secondFunction);
+
+                double[] coordinates = Checks.CheckCoordinates();
+                double delta = Checks.CheckDelta();
+
+                InteractWithUser.PrintResult(compFunction, coordinates[0], coordinates[1], delta);
+            }
+            catch
+            {
+                Console.WriteLine("Возникла непредвиденная ошибка.");
+            }
+            finally
+            {
+                Console.WriteLine("Нажмите ESC, чтобы завершить программу. Иначе нажмите любую другую кнопку.");
+            }
+        }
+        while (Console.ReadKey().Key != ConsoleKey.Escape);
+    }
+}
