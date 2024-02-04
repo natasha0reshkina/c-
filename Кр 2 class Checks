@@ -1,0 +1,89 @@
+using System;
+namespace Library;
+
+public static class Checks
+{
+	public static double[] CheckCoordinates()
+	{
+		bool flagCheckedStart = false;
+		double start = 0;
+
+		while (!flagCheckedStart)
+		{
+			Console.Write("Введите значение a: ");
+
+			string input = Console.ReadLine();
+
+			if (double.TryParse(input, out start))
+			{
+				flagCheckedStart = true;
+			}
+			else
+			{
+				Console.Write("Вы ввели не число. Попробуйте ешё раз.");
+			}
+		}
+
+		bool flagCheckedFinish = false;
+		double finish = 0;
+		while (!flagCheckedFinish)
+		{
+			Console.Write("Введите значение b: ");
+
+			string input = Console.ReadLine();
+
+			if (double.TryParse(input, out finish))
+			{
+				if (finish > start)
+				{
+					flagCheckedFinish = true;
+				}
+				else
+				{
+					Console.Write("Значение b меньше, чем a. Попробуйте ешё раз. ");
+				}
+			}
+			else
+			{
+				Console.Write("Вы ввели не число. Попробуйте ещё раз. ");
+			}
+		}
+
+		double[] result = { start, finish };
+
+		return result;
+	}
+
+	public static double CheckDelta()
+	{
+		bool flagCheckDelta = false;
+
+		double delta = 0;
+
+		while (!flagCheckDelta)
+		{
+			Console.Write("Введите значение шага (delta): ");
+
+			string input = Console.ReadLine();
+
+			if (double.TryParse(input, out delta))
+			{
+				if (delta < 1 && delta > 0)
+				{
+					flagCheckDelta = true;
+				}
+				else
+				{
+					Console.Write("Ваш шаг не лежит в диапазоне (0; 1). Попробуйте ещё раз. ");
+				}
+			}
+			else
+			{
+				Console.Write("Вы ввели не число. Попробуйте ещё раз. ");
+			}
+		}
+
+		return delta;
+	}
+}
+
