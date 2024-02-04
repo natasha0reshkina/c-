@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Library3
+{
+    public static class CircleUtils
+    {
+        public static void Generate(int n, out Circle[] cls)
+        {
+            Random rand = new Random();
+            cls = new Circle[n];
+            for (int i = 0; i < n; i++)
+            {
+                cls[i] = new Circle
+                {
+                    X = rand.NextDouble() * 10 - 5,
+                    Y = rand.NextDouble() * 10 - 5,
+                    Radius = rand.NextDouble() * 10
+                };
+            }
+        }
+
+        public static void ToConsole(Circle[] cls)
+        {
+            Array.ForEach(cls, c => Console.WriteLine(c));
+        }
+    }
+
+}
