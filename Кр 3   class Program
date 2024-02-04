@@ -1,0 +1,50 @@
+using Library3;
+using System;
+using System.Linq;
+
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            do
+            {
+                Console.Clear();
+                try
+                {
+
+                    Console.WriteLine("Введите количество окружностей:");
+                    int n;
+                    Methods.ReadInt("Введите координату х:", out n);
+
+                    Library3.Circle[] circles;
+                    Library3.CircleUtils.Generate(n, out circles);
+
+                    Console.WriteLine("Сгенерированные окружности:");
+                    Library3.CircleUtils.ToConsole(circles);
+
+                    Array.Sort(circles, (c1, c2) =>
+                    {
+                        double areaDiff = c1.GetArea() - c2.GetArea();
+                        if (areaDiff != 0)
+                            return areaDiff > 0 ? 1 : -1;
+                        else
+                            return (c1.X + c1.Y).CompareTo(c2.X + c2.Y);
+                    });
+
+
+                    Console.WriteLine("\nОтсортированные окружности:");
+                    Library3.CircleUtils.ToConsole(circles);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Программа экстренно завершилась.");
+                    Thread.Sleep(5000);
+                    Console.Clear();
+                }
+
+                Console.WriteLine("Для выхода из программы нажмите Escape. Чтобы продолжить Enter");
+            } while (Console.ReadKey().Key != ConsoleKey.Escape);
+        }
+    }
