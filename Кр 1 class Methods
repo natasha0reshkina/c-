@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Library
+{
+    /// <summary>
+    /// Class for reading and validating data from user.
+    /// </summary>
+    public static class Methods
+    {
+        /// <summary>
+        /// Read and validate double values.
+        /// </summary>
+        /// <param name="entery">To inform user what to do.</param>
+        /// <param name="n">Value to get.</param>
+        /// <param name="lowerBound">Unnesescary parameter for boundaries(left).</param>
+        /// <param name="upperBound">Unnesescary parameter for boundaries(right).</param>
+        public static void ReadDouble(string entery, out double n, double lowerBound = double.MinValue,
+            double upperBound = double.MaxValue)
+        {
+            bool isRead = false;
+            Console.WriteLine(entery);
+            do
+            {
+                if (!double.TryParse(Console.ReadLine(), out n) || !(lowerBound < n && n < upperBound))
+                {
+                    Console.WriteLine("Неверные данные. Повторите ввод:");
+                }
+                else
+                {
+                    isRead = true;
+                }
+            } while (!isRead);
+        }
+
+        
+    }
+}
