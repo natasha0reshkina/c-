@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Library
+{
+    /// <summary>
+    /// Class for beauty printing data.
+    /// </summary>
+    public static class Output
+    {
+        /// <summary>
+        /// Display info about Point belonging to 3 functions.
+        /// </summary>
+        /// <param name="data">Info about belonging.</param>
+        /// <exception cref="ArgumentNullException">if data is null.</exception>
+        /// <exception cref="Exception">For other problems.</exception>
+        public static void EpsilonFunctionsInfo(Dictionary<double, List<bool>> data)
+        {
+            if (data is null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            try
+            {
+                string epsilon = "Epsilon";
+                string f1 = "-x^2 + 6x + 5";
+                string f2 = "sqrt(x - 3) + 4";
+                string f3 = "2 * x^3 + x^2 - 8 * x - 7";
+                Console.WriteLine($"{epsilon,15} | {f1,15} | {f2,15} | {f3,30}");
+                foreach (var item in data)
+                {
+                    if (item.Value is null)
+                    {
+                        throw new ArgumentNullException(nameof(item.Value));
+                    }
+
+                    if (item.Value.Count != 3)
+                    {
+                        throw new FormatException(nameof(item.Value));
+                    }
+                    Console.WriteLine($"{item.Key.ToString(),15} | {item.Value[0],15} | {item.Value[1],15} | {item.Value[2],30}");
+                }
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+    }
+}
