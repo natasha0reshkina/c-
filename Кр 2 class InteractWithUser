@@ -1,0 +1,22 @@
+using System;
+namespace Library;
+
+public static class InteractWithUser
+{
+	public static void PrintResult(CompFunction function, double start, double finish, double delta)
+	{
+		Console.Clear();
+
+		double num = start;
+
+		Console.WriteLine("Значения x | Значения f(x)");
+		Console.WriteLine("-------------------------");
+
+		while (num <= finish)
+		{
+			Console.WriteLine($"{num:f3} | {function.Result(num):f3}");
+			num += delta;
+		}
+	}
+}
+
