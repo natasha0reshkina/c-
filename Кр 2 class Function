@@ -1,0 +1,26 @@
+namespace Library;
+
+public delegate double MathConstruction(double x);
+
+public class Function
+{
+    private MathConstruction insideOfFunction;
+
+    public MathConstruction InsideOfFunction
+    {
+        get
+        {
+            return insideOfFunction;
+        }
+    }
+
+    public Function(MathConstruction func)
+    {
+        this.insideOfFunction = func;
+    }
+
+    public double Result(double xCoordinate)
+    {
+        return insideOfFunction.Invoke(xCoordinate);
+    }
+}
