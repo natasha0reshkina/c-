@@ -1,0 +1,58 @@
+using Library;
+
+class Program
+{
+    /// <summary>
+    /// Creating Point from Users data and providing some interesting info about it.
+    /// </summary>
+    public static void Main()
+    {
+        do
+        {
+            Console.Clear();
+            try
+            {
+                double x, y;
+                Methods.ReadDouble("Введите координату х:", out x);
+                Methods.ReadDouble("Введите координату у:", out y);
+                Point point = new Point(x, y);
+
+                List<double> epsilons = new List<double>();
+                epsilons.Add(0.05);
+                epsilons.Add(0.01);
+                epsilons.Add(0.001);
+                epsilons.Add(0.0005);
+
+                Dictionary<double, List<bool>> data = new Dictionary<double, List<bool>>();
+                foreach (double eps in epsilons)
+                {
+                    data[eps] = new List<bool>();
+                }
+
+                foreach (double eps in epsilons)
+                {
+
+                    //Альтернатива.
+                    //data[eps].Add(point.IsNearFunc(new RealFunction((double x) => -(x * x) + 6 * x + 5), eps));
+                    //data[eps].Add(point.IsNearFunc(new RealFunction((double x) => Math.Sqrt(x - 3) + 4), eps));
+                    //data[eps].Add(point.IsNearFunc(new RealFunction((double x) => 2 * (x * x * x) + x * x - 8 * x - 7), eps));
+                    
+                    data[eps].Add(point.IsNearFunc(delegate (double x){return -(x * x) + 6 * x + 5;}, eps));
+                    data[eps].Add(point.IsNearFunc(delegate (double x){return Math.Sqrt(x - 3) + 4;}, eps));
+                    data[eps].Add(point.IsNearFunc(delegate (double x){return 2 * (x * x * x) + x * x - 8 * x - 7;}, eps));
+                }
+
+                Output.EpsilonFunctionsInfo(data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Программа экстренно завершилась.");
+                Thread.Sleep(5000);
+                Console.Clear();
+            }
+
+            Console.WriteLine("Для выхода из программы нажмите Escape. Чтобы продолжить Enter");
+        } while (Console.ReadKey().Key != ConsoleKey.Escape);
+    }
+}
