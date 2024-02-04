@@ -1,0 +1,37 @@
+using System;
+namespace Library;
+
+public class CompFunction
+{
+	private Function firstFunction;
+
+	public Function FirstFunction
+	{
+		get
+		{
+			return firstFunction;
+		}
+	}
+
+    private Function secondFunction;
+
+    public Function SecondFunction
+    {
+        get
+        {
+            return secondFunction;
+        }
+    }
+
+    public CompFunction(Function firstFunction, Function secondFunction)
+	{
+		this.firstFunction = firstFunction;
+		this.secondFunction = secondFunction;
+	}
+
+	public double Result(double xCoordinate)
+	{
+		return secondFunction.Result(firstFunction.Result(xCoordinate));
+	}
+}
+
