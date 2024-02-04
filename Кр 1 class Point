@@ -1,0 +1,83 @@
+namespace Library
+{
+    /// <summary>
+    /// Delegate represents real functions with one parameter;
+    /// </summary>
+    /// <param name="x">X value of the point.</param>
+    /// <returns>Value of the function in point X.</returns>
+    public delegate double RealFunction(double x);
+
+    /// <summary>
+    /// Интерфейс, представляющий реальную функцию с одним параметром;
+    /// </summary>
+    public interface IRealFunction
+    {
+        double Calculate(double x);
+    }
+
+    /// <summary>
+    /// Represents point on plane.
+    /// </summary>
+    public class Point
+    {
+        /// <summary>
+        /// Property of X coord.
+        /// </summary>
+        public double X { get; }
+
+        /// <summary>
+        /// Property of Y coord.
+        /// </summary>
+        public double Y { get; }
+
+        /// <summary>
+        /// Constructor with param to put in properties.
+        /// </summary>
+        /// <param name="x">X coord.</param>
+        /// <param name="y">Y coord.</param>
+        public Point(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
+        /// <summary>
+        /// Basic constuctor.
+        /// </summary>
+        public Point()
+        {
+            X = 0;
+            Y = 0;
+        }
+
+        /// <summary>
+        /// Check if Point is near(epsilin) to func value.
+        /// </summary>
+        /// <param name="realFunction">Real function to compute value with X.</param>
+        /// <param name="epsilon">For checking the boundaries.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">if Delegate is null.</exception>
+        /// <exception cref="Exception">For other problems.</exception>
+        public bool IsNearFunc(RealFunction realFunction, double epsilon)
+        //public bool IsNearFunc(IRealFunction realFunction, double epsilon)
+        {
+            if (realFunction is null)
+            {
+                throw new ArgumentNullException(nameof(realFunction));
+            }
+            try
+            {
+               
+                if (Y != realFunction(X))
+                {
+                    return false;
+                }
+                return realFunction(X) - epsilon <= Y && Y <= realFunction(X) + epsilon;
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+    }
+}
