@@ -1,0 +1,122 @@
+public class Widget
+{
+    private string widgetId;
+    private string name;
+    private int quantity;
+    private double price;
+    private bool isAvailable;
+    private string manufactureDate;
+    private string specifications;
+
+
+
+    public string WidgetId
+    {
+        get => widgetId;
+
+        init
+        {
+            if (value is null)
+            {
+                throw new ArgumentOutOfRangeException("Неверное значение WidgetId");
+            }
+
+            widgetId = value;
+        }
+    }
+
+    public string Name
+    {
+        get => name;
+
+        init
+        {
+            if (value is null)
+            {
+                throw new ArgumentOutOfRangeException("Неверное значение Name");
+            }
+
+            name = value;
+        }
+    }
+    public int Quantity
+    {
+        get => quantity;
+
+        init
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException("Неверное значение Quantity");
+            }
+
+            quantity = value;
+        }
+    }
+    public double Price
+    {
+        get => price;
+
+        init
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException("Неверное значение Price");
+            }
+
+            price = value;
+        }
+    }
+    public bool IsAvailable
+    {
+        get => isAvailable;
+
+        init
+        {
+            isAvailable = value;
+        }
+    }
+    public string ManufactureDate
+    {
+        get => manufactureDate;
+
+        init
+        {
+            if (value is null)
+            {
+                throw new ArgumentOutOfRangeException("Неверное значение ManufactureDate");
+            }
+
+            manufactureDate = value;
+        }
+    }
+    public string Specifications
+    {
+        get => specifications;
+
+        init
+        {
+            specifications = value;
+        }
+    }
+    public Widget(string widgetId, string name, int quantity, double price, bool isAvailable, string manufactureDate, string specifications)
+    {
+        WidgetId = widgetId;
+        Name = name;
+        Quantity = quantity;
+        Price = price;
+        IsAvailable = isAvailable;
+        ManufactureDate = manufactureDate;
+        Specifications = specifications;
+    }
+    public Widget()
+    {
+        WidgetId = "";
+        Name = "";
+        Quantity = 0;
+        Price = 0;
+        IsAvailable = false;
+        ManufactureDate = "";
+        Specifications = "";
+    }
+}
