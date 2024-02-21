@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace Library_of_classes
+{
+    public class ReadJson
+    {
+        public static List<Widget> Read(string path)
+        {
+            List<Widget> patients = new List<Widget>();
+            // потом поменять путь на path
+            JsonElement jsonElement = JsonSerializer.Deserialize<JsonElement>(File.ReadAllText("3V.json"));
+            foreach (JsonElement patientJson in jsonElement.EnumerateArray())
+            {
+                Widget widget = new Widget(patientJson);
+                patients.Add(widget);
+            }
+            return patients;
+        }
+    }
+}
