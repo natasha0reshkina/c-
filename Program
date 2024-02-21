@@ -1,0 +1,105 @@
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+using Library_of_classes;
+using System.Reflection;
+
+    class Program
+    {
+    
+        static void Main(string[] args)
+        {
+        do
+        {
+            try
+            {
+                Console.WriteLine("Введите путь к файлу:");
+                string jsonFilePath = Console.ReadLine();
+                string Output = "Output.json";
+                List<Widget> widgets = ReadJson.Read(jsonFilePath);
+                List<UpdatedEventArgs> all = new List<UpdatedEventArgs>();
+
+                Console.WriteLine("Выберите пункт из меню:");
+                Console.WriteLine("1. Отсортировать коллекцию объектов по одному из полей");
+                Console.WriteLine("2. Выбрать объект и отредактировать в нем любое поле");
+                int n = 0;
+                Methods.ReadInt(out n);
+                while (n != 1 & n != 2)
+                {
+                    Console.WriteLine($"Это значение не подходит.");
+                    Console.WriteLine("Выберите пункт из меню:");
+                    Console.WriteLine("1. Отсортировать коллекцию объектов по одному из полей");
+                    Console.WriteLine("2. Выбрать объект и отредактировать в нем любое поле");
+                    n = 0;
+                    Methods.ReadInt(out n);
+                }
+                if (n == 1)
+                {
+                    Console.WriteLine("Выберите поле для сортировки:");
+                    Console.WriteLine("1. widgetId");
+                    Console.WriteLine("2. name");
+                    Console.WriteLine("3. quantity");
+                    Console.WriteLine("4. price");
+                    Console.WriteLine("5. isAvailable");
+                    Console.WriteLine("6. manufactureDate");
+                    int decision = 0;
+                    Methods.ReadInt(out decision);
+                    while (decision < 1 || decision > 6)
+                    {
+                        Console.WriteLine($"Это значение не подходит.");
+                        Console.WriteLine("Выберите поле для сортировки:");
+                        Console.WriteLine("1. widgetId");
+                        Console.WriteLine("2. name");
+                        Console.WriteLine("3. quantity");
+                        Console.WriteLine("4. price");
+                        Console.WriteLine("5. isAvailable");
+                        Console.WriteLine("6. manufactureDate");
+                        Methods.ReadInt(out decision);
+                    }
+                    Sort.Sorting(widgets, decision, Output);
+                }
+                else if (n == 2)
+                {
+                    Console.WriteLine($"Введите номер изменяемого объекта. Натуральное число до {widgets.Count}");
+                    int index = 0;
+                    Methods.ReadInt(out index);
+                    while (index < 1 || index > widgets.Count)
+                    {
+                        Console.WriteLine($"Это значение не подходит. Введите номер изменяемого объекта. Натуральное число до {widgets.Count}");
+                        Methods.ReadInt(out index);
+                    }
+                    Console.WriteLine("Выберите поле для изменения:");
+                    Console.WriteLine("1. name");
+                    Console.WriteLine("2. quantity");
+                    Console.WriteLine("3. isAvailable");
+                    Console.WriteLine("4. manufactureDate");
+                    Console.WriteLine("5. specifications");
+                    int decision = 0;
+                    Methods.ReadInt(out decision);
+                    while (decision < 1 || decision > 5)
+                    {
+                        Console.WriteLine("Выберите поле для изменения:");
+                        Console.WriteLine("1. name");
+                        Console.WriteLine("2. quantity");
+                        Console.WriteLine("3. isAvailable");
+                        Console.WriteLine("4. manufactureDate");
+                        Console.WriteLine("5. specifications");
+                        Methods.ReadInt(out decision);
+                    }
+                    all.Add(Widget.Change(widgets, index, decision, Output));
+                    AutoSaver.Saver(all, jsonFilePath);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Что-то пошло не так. Попробуйте поменять входные данные.");
+            }
+            //Бесконечный ввод, пока пользователь не захочет выйти.
+            Console.WriteLine("Для выхода нажмите Escape. Чтобы продолжить Enter.");
+
+        } while (Console.ReadKey().Key != ConsoleKey.Escape);
+    }
+    }
