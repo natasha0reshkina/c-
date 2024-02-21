@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Library_of_classes
+{
+    public class AutoSaver
+    {
+        
+        public static void Writing(UpdatedEventArgs thing)
+        {
+            
+            Widget Updater = new Widget();
+            Updater update = new Updater();
+            Updater.Updated += update.Message;
+            Console.WriteLine(thing.ChangeDateTime.ToString());
+            
+
+        }
+        public static void Saver(List<UpdatedEventArgs> all,string path)
+        {
+
+            if(all.Count > 1)
+            {
+                if(all[all.Count-1].ChangeDateTime< all[all.Count - 2].ChangeDateTime.AddSeconds(15))
+                {
+                    Widget.ToJson(all[all.Count - 1].Widgets, path.Replace(".json","_tmp.json"));
+                }
+
+            }
+
+
+        }
+    }
+}
