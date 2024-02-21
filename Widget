@@ -1,0 +1,254 @@
+using System;
+
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Text.Json;
+
+using System.Threading.Tasks;
+
+namespace Library_of_classes
+{
+    public class Widget
+    {
+        private string widgetId;
+        private string name;
+        private int quantity;
+        private double price;
+        private bool isAvailable;
+        private string manufactureDate;
+        private List<Specification> specifications = new List<Specification>();
+
+
+
+
+        public delegate void EventHandler<EventArgs>();
+        public event EventHandler<EventArgs> Updated;
+        public delegate void DopEvent<EventArgs>();
+        public event DopEvent<EventArgs> Dopevent;
+        public void UpdateEveryone()
+        {
+            Updated();
+        }
+        public void ChangePrice(Widget widget, double price)
+        {
+            widget.Price += price;
+        }
+        public string WidgetId
+        {
+            get => widgetId;
+
+            private set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentOutOfRangeException("Неверное значение WidgetId");
+                }
+
+                widgetId = value;
+            }
+        }
+
+        public string Name
+        {
+            get => name;
+
+            private set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentOutOfRangeException("Неверное значение Name");
+                }
+
+                name = value;
+            }
+        }
+        public int Quantity
+        {
+            get => quantity;
+
+            private set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Неверное значение Quantity");
+                }
+
+                quantity = value;
+            }
+        }
+        public double Price
+        {
+            get => price;
+
+            private set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Неверное значение Price");
+                }
+
+                price = value;
+            }
+        }
+        public bool IsAvailable
+        {
+            get => isAvailable;
+
+            private set
+            {
+                isAvailable = value;
+            }
+        }
+        public string ManufactureDate
+        {
+            get => manufactureDate;
+
+            set
+            {
+                if (value is null)
+                {
+                    throw new ArgumentOutOfRangeException("Неверное значение ManufactureDate");
+                }
+
+                manufactureDate = value;
+            }
+        }
+        public List<Specification> Specifications
+        {
+            get => specifications;
+
+            private set
+            {
+
+                if (value is null)
+                {
+                    throw new ArgumentOutOfRangeException("Неверное значение Specifications");
+                }
+
+                specifications = value;
+
+            }
+        }
+        public Widget(JsonElement json)
+        {
+
+            WidgetId = json.GetProperty(nameof(widgetId)).GetString();
+            Name = json.GetProperty(nameof(name)).GetString();
+            Quantity = json.GetProperty(nameof(quantity)).GetInt32();
+            Price = json.GetProperty(nameof(price)).GetDouble();
+            IsAvailable = json.GetProperty(nameof(isAvailable)).GetBoolean();
+            ManufactureDate = json.GetProperty("manufactureDate").GetString();
+
+
+            specifications = new List<Specification>();
+            JsonElement specificationsArray = json.GetProperty("specifications");
+
+            foreach (JsonElement specificationsJson in specificationsArray.EnumerateArray())
+            {
+                Specification specification = new Specification(specificationsJson);
+
+
+                specifications.Add(specification);
+            }
+
+
+        }
+        public Widget()
+        {
+            WidgetId = "";
+            Name = "";
+            Quantity = 0;
+            Price = 0;
+            IsAvailable = false;
+            ManufactureDate = "";
+            Specifications = new List<Specification>();
+        }
+
+        public static void ToJson(List<Widget> widgets, string path)
+        {
+            File.WriteAllText(path, JsonSerializer.Serialize(widgets, new JsonSerializerOptions { WriteIndented = true }));
+        }
+        public static UpdatedEventArgs Change(List<Widget> widgets, int index, int choice, string path)
+        {
+            index -= 1;
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine($"Введите название");
+                    string res = Console.ReadLine();
+                    widgets[index].Name = res;
+                    Widget.ToJson(widgets, path);
+                    break;
+                case 2:
+                    Console.WriteLine($"Введите натуральное число");
+                    int n = int.Parse(Console.ReadLine());
+                    widgets[index].Quantity = n;
+                    Widget.ToJson(widgets, path);
+                    break;
+                case 3:
+                    Console.WriteLine($"Введите true или false");
+                    bool m = bool.Parse(Console.ReadLine());
+                    widgets[index].IsAvailable = m;
+                    Widget.ToJson(widgets, path);
+                    break;
+                case 4:
+                    Console.WriteLine($"Введите true или false");
+                    string time = Console.ReadLine();
+                    widgets[index].ManufactureDate = time;
+                    Widget.ToJson(widgets, path);
+                    break;
+                case 5:
+                    Console.WriteLine($"Введите число до {widgets[index].Specifications.Count}");
+                    int k = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Выберите что хотите изменить?:");
+                    Console.WriteLine($"1.specName");
+                    Console.WriteLine($"2.specPrice");
+                    Console.WriteLine($"3.isCustom");
+                    int desicion = int.Parse(Console.ReadLine());
+                    if (desicion == 1)
+                    {
+                        Console.WriteLine($"Введите новое specName:");
+                        string name = Console.ReadLine();
+                        widgets[index].Specifications[k - 1].SpecName = name;
+
+                    }
+                    if (desicion == 2)
+                    {
+                        Console.WriteLine($"Введите новое specPrice:");
+                        double price = double.Parse(Console.ReadLine());
+                        Widget DopEvent = new Widget();
+                        DopEvent.ChangePrice(widgets[index], price - widgets[index].Specifications[k - 1].SpecPrice);
+                        widgets[index].Specifications[k - 1].SpecPrice = price;
+
+
+                    }
+                    if (desicion == 3)
+                    {
+                        Console.WriteLine($"Введите новое isCustom:");
+                        bool custom = bool.Parse(Console.ReadLine());
+                        widgets[index].Specifications[k - 1].IsCustom = custom;
+                    }
+                    Widget.ToJson(widgets, path);
+                    break;
+
+
+            }
+
+
+            Widget Updater = new Widget();
+            Updater update = new Updater();
+            Updater.Updated += update.Message;
+            Updater.UpdateEveryone();
+            UpdatedEventArgs thing = new UpdatedEventArgs(DateTime.Now, widgets);
+            AutoSaver.Writing(thing);
+            return thing;
+        }
+    }
+
+
+}
